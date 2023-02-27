@@ -15,6 +15,8 @@ public class DriveBase extends SubsystemBase{
     private CANSparkMax m_rightDrive;
     private CANSparkMax m_rightDriveFollower;
     private DifferentialDrive m_robotDrive;
+    private double leftEncoderPosition;
+    private double rightEncoderPosition;
 
     public DriveBase()
     {
@@ -39,11 +41,44 @@ public class DriveBase extends SubsystemBase{
         m_rightDrive.setSmartCurrentLimit(40, 15);
         m_leftDriveFollower.setSmartCurrentLimit(40, 15);
         m_rightDriveFollower.setSmartCurrentLimit(40, 15);
+
+        leftEncoderPosition = 0;
+        rightEncoderPosition = 0;
     }
 
+    
+    
+    public void periodic() 
+    {
+        setEncoderValueL();
+        setEncoderValueR();
+    }
+    
     public void arcadeDrive(double xSpeed, double zRotation) 
     {
         m_robotDrive.arcadeDrive(xSpeed, zRotation);
+    }
+
+    public double getEncoderPosL() 
+    {
+        double lOdometry = m_leftDrive.getEncoder().getPosition();
+        return lOdometry;
+    }
+
+    public double getEncoderPosR() 
+    {
+        double rOdometry = m_rightDrive.getEncoder().getPosition();
+        return rOdometry;
+    }
+
+    public void setEncoderValueL() 
+    {
+        leftEncoderPosition = getEncoderPosL();
+    }
+
+    public void setEncoderValueR() 
+    {
+        rightEncoderPosition = getEncoderPosR();
     }
 
 }

@@ -9,7 +9,10 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -21,7 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   private DriveBase driveBase;
-  
+  private final XboxController operatorController;
+  Intake intake;
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -32,11 +36,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private TankDrive driveCommand;
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
+    
     driveBase = new DriveBase();
     driveCommand = new TankDrive(driveBase);
     driveBase.setDefaultCommand(driveCommand);
+    operatorController = new XboxController(1);
+    intake = new Intake();
+    // Configure the trigger bindings
+    configureBindings();
+
   }
 
   /**
@@ -52,6 +60,14 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
+    
+      Trigger intakeIn =  new Trigger(()->operatorController.getRawButton(4));
+      intakeIn.whileTrue(new InstantCommand(()->intake.setIntake(1)));
+      intakeIn.onFalse(new InstantCommand(()->intake.setIntake(0)));
+    
+      Trigger intakeOut =  new Trigger(()->operatorController.getRawButton(6));
+      intakeOut.whileTrue(new InstantCommand(()->intake.setIntake(-1)));
+      intakeOut.onFalse(new InstantCommand(()->intake.setIntake(0)));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
