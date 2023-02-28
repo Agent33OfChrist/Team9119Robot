@@ -11,6 +11,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
+import Auto.Auto;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,8 +34,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final Joystick driverJoystick =
+      new Joystick(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private TankDrive driveCommand;
@@ -73,6 +75,12 @@ public class RobotContainer {
     //#TODO make more poses
     Trigger armHome = new Trigger(()->operatorController.getRawButton(7));
     armHome.onTrue(new InstantCommand(()->arm.setArm(0)));
+
+    Trigger resetBot_PosRot = new Trigger(()->driverJoystick.getRawButton(1));
+    resetBot_PosRot.onTrue(new InstantCommand(()->driveBase.resetBot_PosRot()));
+
+    Trigger zeroOdometry = new Trigger(()->driverJoystick.getRawButton(7));
+    zeroOdometry.onTrue(new InstantCommand(()->driveBase.zeroOdometry()));
     
   }
 
@@ -81,8 +89,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-   public Boolean getAutonomousCommand() {
+   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return false;
+    return new Auto(driveBase);
   } 
 }
