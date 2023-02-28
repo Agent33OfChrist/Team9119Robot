@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TankDrive;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
@@ -26,6 +27,7 @@ public class RobotContainer {
   private DriveBase driveBase;
   private final XboxController operatorController;
   Intake intake;
+  Arm arm;
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -38,10 +40,12 @@ public class RobotContainer {
   public RobotContainer() {
     
     driveBase = new DriveBase();
+    
     driveCommand = new TankDrive(driveBase);
     driveBase.setDefaultCommand(driveCommand);
     operatorController = new XboxController(1);
     intake = new Intake();
+    arm = new Arm();
     // Configure the trigger bindings
     configureBindings();
 
@@ -58,20 +62,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
     
-      Trigger intakeIn =  new Trigger(()->operatorController.getRawButton(4));
-      intakeIn.whileTrue(new InstantCommand(()->intake.setIntake(1)));
-      intakeIn.onFalse(new InstantCommand(()->intake.setIntake(0)));
+    Trigger intakeIn =  new Trigger(()->operatorController.getRawButton(4));
+    intakeIn.whileTrue(new InstantCommand(()->intake.setIntake(1)));
+    intakeIn.onFalse(new InstantCommand(()->intake.setIntake(0)));
     
-      Trigger intakeOut =  new Trigger(()->operatorController.getRawButton(6));
-      intakeOut.whileTrue(new InstantCommand(()->intake.setIntake(-1)));
-      intakeOut.onFalse(new InstantCommand(()->intake.setIntake(0)));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    Trigger intakeOut =  new Trigger(()->operatorController.getRawButton(6));
+    intakeOut.whileTrue(new InstantCommand(()->intake.setIntake(-1)));
+    intakeOut.onFalse(new InstantCommand(()->intake.setIntake(0)));
+    //#TODO make more poses
+    Trigger armHome = new Trigger(()->operatorController.getRawButton(7));
+    armHome.onTrue(new InstantCommand(()->arm.setArm(0)));
+    
   }
 
   /**
