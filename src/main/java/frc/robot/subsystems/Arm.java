@@ -21,7 +21,7 @@ public class Arm
         m_arm.setIdleMode(IdleMode.kBrake);
         m_arm.setSmartCurrentLimit(40,15);
         //#TODO set nums
-        m_arm.getEncoder().setPositionConversionFactor(360/100);
+        m_arm.getEncoder().setPositionConversionFactor(360/75);
         m_arm.enableSoftLimit(SoftLimitDirection.kForward, true);
         m_arm.enableSoftLimit(SoftLimitDirection.kReverse, true);
         m_arm.setSoftLimit(SoftLimitDirection.kForward, 0);//set

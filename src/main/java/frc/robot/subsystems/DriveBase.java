@@ -45,19 +45,19 @@ public class DriveBase extends SubsystemBase{
         m_rightDrive.setIdleMode(IdleMode.kCoast);
         m_rightDriveFollower.setIdleMode(IdleMode.kCoast);
         
-        m_leftDrive.setSmartCurrentLimit(40, 15);
-        m_rightDrive.setSmartCurrentLimit(40, 15);
-        m_leftDriveFollower.setSmartCurrentLimit(40, 15);
-        m_rightDriveFollower.setSmartCurrentLimit(40, 15);
+        m_leftDrive.setSmartCurrentLimit(40, 2);
+        m_rightDrive.setSmartCurrentLimit(40, 2);
+        m_leftDriveFollower.setSmartCurrentLimit(40, 2);
+        m_rightDriveFollower.setSmartCurrentLimit(40, 2);
 
-        m_leftDrive.getEncoder().setPositionConversionFactor(0.898 * 0.0254);
-        m_rightDrive.getEncoder().setPositionConversionFactor(0.898 * 0.0254);
+        m_leftDrive.getEncoder().setPositionConversionFactor(0.86 / .477);
+        m_rightDrive.getEncoder().setPositionConversionFactor(0.86 / .477);
 
         leftEncoderPosition = 0;
         rightEncoderPosition = 0;
         //#TODO Measure distance between wheel lines
         diffDriveOdometry = new DifferentialDriveOdometry(
-            Rotation2d.fromRadians(2*(leftEncoderPosition - rightEncoderPosition)/27/*distance between wheel lines in ____ */),
+            Rotation2d.fromRadians(2*(leftEncoderPosition - rightEncoderPosition)/0.4318/*distance between wheel lines in meters */),
             m_leftDrive.getEncoder().getPosition(), 
             m_rightDrive.getEncoder().getPosition(),
             new Pose2d(0, 0, new Rotation2d())); 
@@ -74,7 +74,7 @@ public class DriveBase extends SubsystemBase{
         setEncoderValueR();
 
         Pose2d fieldPose2d;
-        robotRotation = Rotation2d.fromRadians(2*(leftEncoderPosition - rightEncoderPosition)/27/*distance between wheel lines in ____ */);
+        robotRotation = Rotation2d.fromRadians(2*(leftEncoderPosition - rightEncoderPosition)/.4318/*distance between wheel lines in ___ */);
         SmartDashboard.putNumber("Left Encoder Pos", leftEncoderPosition);
         SmartDashboard.putNumber("Right Encoder Pos", rightEncoderPosition);
         diffDriveOdometry.update(robotRotation, leftEncoderPosition, rightEncoderPosition);
