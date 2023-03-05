@@ -25,17 +25,14 @@ public class Auto extends CommandBase
     @Override
     public void initialize() 
     {
-        driveBase.resetBot_PosRot();
+        //driveBase.resetBot_PosRot();
         System.out.println("StraightDrive Auto Initialized");
     }
 
     @Override
     public void execute() 
     {
-        odoX = driveBase.getPose().getX();
-        odoY = driveBase.getPose().getY();
-        robotRotationDeg = driveBase.getPose().getRotation();
-        double rotDouble = robotRotationDeg.getDegrees();
+        
 
         driveBase.arcadeDrive(0.5, 0);
 
@@ -47,7 +44,6 @@ public class Auto extends CommandBase
     {
         driveBase.arcadeDrive(0, 0);
         System.out.println("Auto Finished");
-        driveBase.resetBot_PosRot();
     }
 
     // Returns true when the command should end.

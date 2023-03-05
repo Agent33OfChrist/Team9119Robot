@@ -76,11 +76,6 @@ public class RobotContainer {
     Trigger armHome = new Trigger(()->operatorController.getRawButton(7));
     armHome.onTrue(new InstantCommand(()->arm.setArm(0)));
 
-    Trigger resetBot_PosRot = new Trigger(()->driverJoystick.getRawButton(1));
-    resetBot_PosRot.onTrue(new InstantCommand(()->driveBase.resetBot_PosRot()));
-
-    Trigger zeroOdometry = new Trigger(()->driverJoystick.getRawButton(7));
-    zeroOdometry.onTrue(new InstantCommand(()->driveBase.zeroOdometry()));
     
   }
 
@@ -91,6 +86,7 @@ public class RobotContainer {
    */
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new Auto(driveBase);
+    //return new Auto(driveBase);
+    return null;
   } 
 }
