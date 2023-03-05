@@ -86,7 +86,7 @@ public class RobotContainer {
    */
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    //return new Auto(driveBase);
-    return null;
+    return new Auto(driveBase);
+    //return null;
   } 
 }

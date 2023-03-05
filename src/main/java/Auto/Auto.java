@@ -7,15 +7,13 @@ import frc.robot.subsystems.DriveBase;
 public class Auto extends CommandBase
 {
     
-    double odoX;
-    double odoY;
-    Rotation2d robotRotationDeg;
+  
     DriveBase driveBase;
 
     public Auto(DriveBase driveBase)
     {
         System.out.println("StraightDrive Construction Started");
-        driveBase = driveBase;
+        this.driveBase = driveBase;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveBase);
     }
@@ -27,14 +25,14 @@ public class Auto extends CommandBase
     {
         //driveBase.resetBot_PosRot();
         System.out.println("StraightDrive Auto Initialized");
+       
     }
 
     @Override
     public void execute() 
     {
         
-
-        driveBase.arcadeDrive(0.5, 0);
+        driveBase.arcadeDrive(.2, 0);
 
 
     }
@@ -50,7 +48,7 @@ public class Auto extends CommandBase
     @Override
     public boolean isFinished() 
     {
-        return (odoX == 3);
+        return false;
         
         
     }
